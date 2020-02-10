@@ -1,6 +1,5 @@
-import redis
 import random
-import config
+import redis
 from flask import Flask, jsonify, request
 
 
@@ -15,7 +14,13 @@ database = redis.Redis(host=app.config["REDIS_HOSTNAME"], port=6379, decode_resp
 
 
 def generate_code():
-    for i in range(10):
+    """Generates available share code.
+
+    Returns:
+      String with a number from 0000-99999.
+
+    """
+    for _ in range(10):
         code = str(random.randint(0, 10000)).zfill(4)
 
         if not database.exists("clipboard:{}".format(code)):
@@ -37,8 +42,8 @@ def get_clipboard(share_id):
 
     if clipboard:
         return jsonify({"status": "success", "code": share_id, "clipboard": clipboard})
-    else:
-        return jsonify({"status": "error", "msg": "Invalid Code!"}), 400
+
+    return jsonify({"status": "error", "msg": "Invalid Code!"}), 400
 
 
 @app.route("/clipboard", methods=["POST"])
@@ -60,7 +65,7 @@ def set_clipboard():
 def get_status():
     try:
         info = database.info()
-    except:
+    except redis.RedisError:
         return jsonify({"status": "error", "msg": "Couldn't connect to Redis!"}), 500
 
     return jsonify({"status": "success", "database": {"expired_keys": info["expired_keys"], "used_memory": info["used_memory"], "commands_count": info["total_commands_processed"]}})
