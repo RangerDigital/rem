@@ -70,3 +70,4 @@ def test_status(URL):
     response = requests.get(URL + "/status")
 
     assert response.status_code == 200
+    assert json["status"] == "success"
