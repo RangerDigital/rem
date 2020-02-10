@@ -68,7 +68,8 @@ def get_status():
     except redis.RedisError:
         return jsonify({"status": "error", "msg": "Couldn't connect to Redis!"}), 500
 
-    return jsonify({"status": "success", "database": {"expired_keys": info["expired_keys"], "used_memory": info["used_memory"], "commands_count": info["total_commands_processed"]}})
+    return jsonify({"status": "success", "database": {"expired_keys": info["expired_keys"], "used_memory": info["used_memory"], "commands_count": info["total_commands_processed"]},
+                    "config": {"redis_hostname": app.config["REDIS_HOSTNAME"], "redis_timeout": app.config["TIMEOUT"]}})
 
 
 @app.errorhandler(400)

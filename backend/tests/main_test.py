@@ -68,6 +68,7 @@ def test_small_traffic(URL):
 def test_status(URL):
     # Get system status.
     response = requests.get(URL + "/status")
+    json = response.json()
 
     assert response.status_code == 200
     assert json["status"] == "success"
