@@ -11,32 +11,32 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-  steps:
-  - uses: actions/checkout@v1
+    steps:
+    - uses: actions/checkout@v1
 
-  - name: Set up Docker Buildx
-    uses: crazy-max/ghaction-docker-buildx@v1
-    with:
-      version: latest
+    - name: Set up Docker Buildx
+      uses: crazy-max/ghaction-docker-buildx@v1
+      with:
+        version: latest
 
-  - name: Set up py.test
-    run: pip3 install pytest requests
+    - name: Set up py.test
+      run: pip3 install pytest requests
 
-  - name: Run Buildx for testing
-    run: docker buildx build --tag rangerdigital/rem:dev --platform linux/amd64 --output type=docker backend/.
+    - name: Run Buildx for testing
+      run: docker buildx build --tag rangerdigital/rem:dev --platform linux/amd64 --output type=docker backend/.
 
-  - name: Prepare Redis container
-    run: docker run --name redis -p 127.0.0.1:6379:6379 -d redis:latest
+    - name: Prepare Redis container
+      run: docker run --name redis -p 127.0.0.1:6379:6379 -d redis:latest
 
-  - name: Run Rem container for testing
-    run: docker run --name rem -p 127.0.0.1:5000:8000 -d -e REDIS_HOSTNAME="127.0.0.1" rangerdigital/rem:dev
+    - name: Run Rem container for testing
+      run: docker run --name rem -p 127.0.0.1:5000:8000 -d -e REDIS_HOSTNAME="127.0.0.1" rangerdigital/rem:dev
 
-  - name: Run all the tests
-    run: sleep 5; cd backend/; python3 -m pytest
+    - name: Run all the tests
+      run: sleep 5; cd backend/; python3 -m pytest
 
-  - name: Setup Tmate session
-    uses: mxschmitt/action-tmate@v1
-    if: failure()
+    - name: Setup Tmate session
+      uses: mxschmitt/action-tmate@v1
+      if: failure()
 
   build:
     runs-on: ubuntu-latest
