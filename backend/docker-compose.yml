@@ -11,3 +11,5 @@ services:
         environment:
             - REDIS_HOSTNAME=redis
         image: 'rangerdigital/rem:dev'
+        depends_on:
+        - redis
