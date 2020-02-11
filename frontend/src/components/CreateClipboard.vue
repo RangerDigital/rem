@@ -6,17 +6,77 @@
   </div>
 
   <div class="output-field">
-    <p>Your Share Code</p>
-    <h1 class="output-code">67422</h1>
+    <p v-bind:class="{'error-text': errorState}">{{ shareMessage }}</p>
+    <h1 class="output-code" v-bind:style="{ opacity: shareOpacity + '%' }" v-bind:class="{'error-text': errorState}">{{ shareCode }}</h1>
   </div>
 
-  <button><img class="icon-small" src="../assets/icon-paste.svg" />CREATE</button>
+  <button v-bind:class="{'error-background': errorState}" v-on:click="postClipboard"><img class="icon-small" src="../assets/icon-paste.svg" />{{ buttonMessage }}</button>
 </div>
 </template>
 
 <script>
 export default {
-  name: "CreateClipboard"
+  name: "CreateClipboard",
+  data() {
+    return {
+      shareMessage: "Your Share Code",
+      shareCode: "_____",
+      shareOpacity: 100,
+      errorState: false,
+      buttonMessage: "CREATE"
+    };
+  },
+  methods: {
+    // Send POST to the backend, On error displays a message.
+    postClipboard: function() {
+      navigator.clipboard.readText()
+        .then(text => {
+          this.$http.post("http://127.0.0.1:5000/clipboard", {
+              clipboard: encodeURIComponent(text)
+            })
+            .catch(error => {
+              this.errorState = true;
+              this.shareMessage = "Connection Error!";
+              console.log(error);
+            })
+            .then(response => {
+              if (response.status == 200) {
+                this.shareCode = response.data.code;
+                this.shareMessage = "Your Share Code";
+                this.shareOpacity = 100;
+                this.errorState = false;
+                this.buttonMessage = "RECREATE";
+              } else {
+                this.shareCode = "_____";
+                this.shareMessage = "Empty Clipboard Error!";
+                this.errorState = true;
+              }
+            });
+        })
+        .catch(error => {
+          this.errorState = true;
+          this.shareMessage = "Permission Error!";
+          console.log(error);
+        })
+    },
+
+    // Count opacity down every second, reset component after code expires
+    opacityAnimation: function() {
+      setTimeout(() => {
+        if (this.shareOpacity > 0 && this.buttonMessage == "RECREATE") {
+          this.shareOpacity -= 1.66;
+        } else {
+          this.shareCode = "_____";
+          this.shareOpacity = 100;
+          this.buttonMessage = "CREATE";
+        }
+        this.opacityAnimation();
+      }, 1000);
+    },
+  },
+  created() {
+    this.opacityAnimation();
+  }
 };
 </script>
 
@@ -50,8 +110,10 @@ export default {
 }
 
 .output-code {
+  transition: opacity 1s ease-in-out;
   font-size: 8.5rem;
   letter-spacing: 0.25em;
+  opacity: 100%;
   text-align: center;
 }
 
@@ -100,6 +162,15 @@ button:active {
   width: 3em;
   padding-right: 1em;
   vertical-align: middle;
+}
+
+/* Used for POST errors. */
+.error-text {
+  color: #FF4040 !important;
+}
+
+.error-background {
+  background-color: #FF4040 !important;
 }
 
 @media (max-width: 1500px) {

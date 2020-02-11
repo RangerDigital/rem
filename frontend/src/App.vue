@@ -84,6 +84,13 @@ p {
   }
 }
 
+/* Smartphones - Vertical and Keyboard */
+@media (max-height: 550px) and (orientation: portrait) {
+  html {
+    font-size: 3px !important;
+  }
+}
+
 /* Smartphones - Vertical */
 @media (max-width: 500px) and (orientation: portrait) {
   html {
@@ -138,7 +145,7 @@ p {
   }
 
   .grid-container {
-    grid-template-columns: 15vw 25vw 20vw 25vw 15vw;
+    grid-template-columns: 20vw 20vw 20vw 20vw 20vw;
   }
 }
 
