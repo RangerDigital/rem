@@ -83,4 +83,69 @@ p {
     grid-template-rows: 15vh 5vh 30vh 5vh 30vh 5vh 10vh;
   }
 }
+
+/* Smartphones - Vertical */
+@media (max-width: 500px) and (orientation: portrait) {
+  html {
+    font-size: 5px;
+  }
+}
+
+/* Smartphones - Horizontal */
+@media (max-width: 750px) and (orientation: landscape) {
+  html {
+    font-size: 3px;
+  }
+}
+
+/* Tablets - Vertical */
+@media (min-width: 750px) and (max-width: 1100px) and (orientation: portrait) {
+  html {
+    font-size: 6px;
+  }
+
+  .grid-container {
+    grid-template-columns: 15vw 25vw 20vw 25vw 15vw;
+  }
+}
+
+/* Tablets - Horizontal */
+@media (min-width: 750px) and (max-width: 1100px) and (orientation: landscape) {
+  html {
+    font-size: 6px;
+  }
+
+  .grid-container {
+    grid-template-columns: 15vw 25vw 20vw 25vw 15vw;
+  }
+}
+
+/* Laptops - Vertical */
+@media (min-width: 1100px) and (max-width: 1500px) and (orientation: portrait) {
+  html {
+    font-size: 7px;
+  }
+
+  .grid-container {
+    grid-template-columns: 15vw 25vw 20vw 25vw 15vw;
+  }
+}
+
+/* Laptops - Horizontal */
+@media (min-width: 1100px) and (max-width: 1500px) and (orientation: landscape) {
+  html {
+    font-size: 7px;
+  }
+
+  .grid-container {
+    grid-template-columns: 15vw 25vw 20vw 25vw 15vw;
+  }
+}
+
+/* Desktop - Horizontal */
+@media (min-width: 1500px) and (max-width: 2000px) and (orientation: landscape) {
+  html {
+    font-size: 8px;
+  }
+}
 </style>
