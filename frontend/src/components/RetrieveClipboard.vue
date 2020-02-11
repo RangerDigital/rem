@@ -6,17 +6,58 @@
   </div>
 
   <div class="input-field">
-    <p>Enter Share Code</p>
-    <input maxlength="5" onfocus="this.value=''" type="text" inputmode="numeric" />
+    <p v-bind:class="{'error-text': errorState}">{{ shareMessage }}</p>
+    <input v-bind:class="{'error-border': errorState}" maxlength="5" onfocus="this.value=''" type="text" inputmode="numeric" autofocus v-model="shareCode" v-on:keyup.enter="getClipboard" />
   </div>
 
-  <button><img class="icon-small" src="../assets/icon-copy.svg" />RETRIEVE</button>
+  <button v-bind:class="{'error-background': errorState}" v-on:click="getClipboard"><img class="icon-small" src="../assets/icon-copy.svg" />{{ buttonMessage }}</button>
 </div>
 </template>
 
 <script>
 export default {
-  name: "RetrieveClipboard"
+  name: "RetrieveClipboard",
+  data() {
+    return {
+      shareCode: "",
+      shareMessage: "Enter Share Code",
+      errorState: false,
+      buttonMessage: "RETRIEVE"
+    };
+  },
+  methods: {
+
+    getClipboard: function() {
+      this.$http.get("http://127.0.0.1:5000/clipboard/" + this.shareCode)
+        .catch(error => {
+          if (error.response.status == 400) {
+            this.errorState = true;
+            this.buttonMessage = "RETRY";
+            this.shareMessage = "Invalid Share Code!";
+          } else {
+            this.errorState = true;
+            this.shareMessage = "Connection Error!";
+            console.log(error);
+          };
+        })
+        .then(response => {
+          if (response.status == 200) {
+            navigator.clipboard.writeText(decodeURIComponent(response.data.clipboard))
+              .then(() => {
+                this.buttonMessage = "SUCCESS";
+                this.shareMessage = "Success, content copied!";
+                this.shareCode = "";
+                this.errorState = false;
+              })
+              .catch(() => {
+                this.errorState = true;
+                this.buttonMessage = "RETRY";
+                this.shareMessage = "Clipboard API Error!";
+              });
+          }
+        });
+    }
+  },
 };
 </script>
 
@@ -109,6 +150,20 @@ button:active {
   width: 3em;
   padding-right: 1em;
   vertical-align: middle;
+}
+
+/* Used for POST errors. */
+.error-text {
+  color: #FF4040 !important;
+}
+
+.error-border {
+  border: 0.04em solid #FF4040 !important;
+  color: #FF4040 !important;
+}
+
+.error-background {
+  background-color: #FF4040 !important;
 }
 
 @media (max-width: 1500px) {
