@@ -38,6 +38,7 @@ html {
   background-size: cover, cover;
   background-position: bottom;
 
+  overflow-x: hidden;
   box-sizing: border-box;
   font-size: 10px;
   height: 100vh;
