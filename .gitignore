@@ -127,3 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+frontend/node_modules/
+frontend/npm-debug.log
+frontend/yarn-error.log
