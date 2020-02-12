@@ -20,7 +20,7 @@ export default {
   data() {
     return {
       shareMessage: "Your Share Code",
-      shareCode: "_____",
+      shareCode: "*****",
       shareOpacity: 100,
       errorState: false,
       buttonMessage: "CREATE"
@@ -47,7 +47,7 @@ export default {
                 this.errorState = false;
                 this.buttonMessage = "RECREATE";
               } else {
-                this.shareCode = "_____";
+                this.shareCode = "*****";
                 this.shareMessage = "Empty Clipboard Error!";
                 this.errorState = true;
               }
@@ -66,7 +66,7 @@ export default {
         if (this.shareOpacity > 0 && this.buttonMessage == "RECREATE") {
           this.shareOpacity -= 1.66;
         } else {
-          this.shareCode = "_____";
+          this.shareCode = "*****";
           this.shareOpacity = 100;
           this.buttonMessage = "CREATE";
         }

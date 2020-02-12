@@ -10,7 +10,7 @@
     <input v-bind:class="{'error-border': errorState, 'success-border': successState}" maxlength="5" onfocus="this.value=''" type="text" inputmode="numeric" autofocus v-model="shareCode" v-on:keyup.enter="getClipboard" />
   </div>
 
-  <button v-bind:class="{'error-background': errorState}" v-on:click="getClipboard"><img class="icon-small" src="../assets/icon-copy.svg" />{{ buttonMessage }}</button>
+  <button v-bind:class="{'error-background': errorState, 'not-active': !buttonActive}" v-on:click="getClipboard"><img class="icon-small" src="../assets/icon-copy.svg" />{{ buttonMessage }}</button>
 </div>
 </template>
 
@@ -26,22 +26,21 @@ export default {
       buttonMessage: "RETRIEVE"
     };
   },
+
+  computed: {
+    buttonActive: function() {
+      if (this.shareCode.length >= 4 || this.successState == true) {
+        return true
+      } else {
+        return false
+      }
+    }
+  },
+
   methods: {
 
     getClipboard: function() {
       this.$http.get("http://127.0.0.1:5000/clipboard/" + this.shareCode)
-        .catch(error => {
-          this.successState = false;
-          if (error.response.status == 400) {
-            this.errorState = true;
-            this.buttonMessage = "RETRY";
-            this.shareMessage = "Invalid Share Code!";
-          } else {
-            this.errorState = true;
-            this.shareMessage = "Connection Error!";
-            console.log(error);
-          };
-        })
         .then(response => {
           if (response.status == 200) {
             navigator.clipboard.writeText(decodeURIComponent(response.data.clipboard))
@@ -59,7 +58,20 @@ export default {
                 this.shareMessage = "Clipboard API Error!";
               });
           }
-        });
+        })
+        .catch(error => {
+          this.successState = false;
+          if (error.response.status == 400) {
+            this.errorState = true;
+            this.buttonMessage = "RETRY";
+            this.shareMessage = "Invalid Share Code!";
+          } else {
+            this.errorState = true;
+            this.shareMessage = "Connection Error!";
+            console.log(error);
+          };
+        })
+
     }
   },
 };
@@ -163,6 +175,10 @@ button:active {
 .success-border {
   border: 0.04em solid #4093FF !important;
   color: #4093FF !important;
+}
+
+.not-active {
+  background-color: #C5C5C5 !important;
 }
 
 /* Used for POST errors. */
