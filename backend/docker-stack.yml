@@ -1,0 +1,38 @@
+version: "3.7"
+
+services:
+  backend:
+    image: rangerdigital/rem:latest
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.arch == amd64
+      restart_policy:
+        condition: any
+    ports:
+      - 7171:8000
+    networks:
+      - network
+
+  redis:
+    image: redis:latest
+    command: redis-server --appendonly yes
+    volumes:
+      - "redis_data:/data"
+    hostname: redis
+    deploy:
+      mode: global
+      placement:
+        constraints:
+          - node.labels.arch == amd64
+      restart_policy:
+        condition: any
+    networks:
+      - network
+
+networks:
+  network:
+
+volumes:
+  redis_data:
