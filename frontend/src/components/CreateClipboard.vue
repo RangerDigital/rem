@@ -88,7 +88,7 @@ export default {
   padding: 1em 5em;
   border-radius: 0.7em;
   background-color: #f8f8f8;
-  box-shadow: 0 12.5px 10px rgba(0, 0, 0, 0.035), 0 100px 80px rgba(0, 0, 0, 0.07);
+  box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.045);
 
   display: flex;
   flex-direction: column;
@@ -145,7 +145,7 @@ button {
   outline: none;
   border-radius: 0.5em;
 
-  box-shadow: 0 12.5px 10px rgba(0, 0, 0, 0.035), 0 100px 80px rgba(0, 0, 0, 0.07);
+  box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.045);
   transition: all 0.03s ease-in-out;
 }
 

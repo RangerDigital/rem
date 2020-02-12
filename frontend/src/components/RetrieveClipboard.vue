@@ -6,8 +6,8 @@
   </div>
 
   <div class="input-field">
-    <p v-bind:class="{'error-text': errorState}">{{ shareMessage }}</p>
-    <input v-bind:class="{'error-border': errorState}" maxlength="5" onfocus="this.value=''" type="text" inputmode="numeric" autofocus v-model="shareCode" v-on:keyup.enter="getClipboard" />
+    <p v-bind:class="{'error-text': errorState, 'success-text': successState}">{{ shareMessage }}</p>
+    <input v-bind:class="{'error-border': errorState, 'success-border': successState}" maxlength="5" onfocus="this.value=''" type="text" inputmode="numeric" autofocus v-model="shareCode" v-on:keyup.enter="getClipboard" />
   </div>
 
   <button v-bind:class="{'error-background': errorState}" v-on:click="getClipboard"><img class="icon-small" src="../assets/icon-copy.svg" />{{ buttonMessage }}</button>
@@ -22,6 +22,7 @@ export default {
       shareCode: "",
       shareMessage: "Enter Share Code",
       errorState: false,
+      successState: false,
       buttonMessage: "RETRIEVE"
     };
   },
@@ -30,6 +31,7 @@ export default {
     getClipboard: function() {
       this.$http.get("http://127.0.0.1:5000/clipboard/" + this.shareCode)
         .catch(error => {
+          this.successState = false;
           if (error.response.status == 400) {
             this.errorState = true;
             this.buttonMessage = "RETRY";
@@ -45,12 +47,14 @@ export default {
             navigator.clipboard.writeText(decodeURIComponent(response.data.clipboard))
               .then(() => {
                 this.buttonMessage = "SUCCESS";
-                this.shareMessage = "Success, content copied!";
+                this.successState = true;
+                this.shareMessage = "Success, clipboard copied!";
                 this.shareCode = "";
                 this.errorState = false;
               })
               .catch(() => {
                 this.errorState = true;
+                this.successState = false;
                 this.buttonMessage = "RETRY";
                 this.shareMessage = "Clipboard API Error!";
               });
@@ -69,7 +73,7 @@ export default {
   padding: 1em 5em;
   border-radius: 0.7em;
   background-color: #f8f8f8;
-  box-shadow: 0 12.5px 10px rgba(0, 0, 0, 0.035), 0 100px 80px rgba(0, 0, 0, 0.07);
+  box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.045);
 
   display: flex;
   flex-direction: column;
@@ -133,7 +137,7 @@ button {
   outline: none;
   border-radius: 0.5em;
 
-  box-shadow: 0 12.5px 10px rgba(0, 0, 0, 0.035), 0 100px 80px rgba(0, 0, 0, 0.07);
+  box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.045);
   transition: all 0.03s ease-in-out;
 }
 
@@ -150,6 +154,15 @@ button:active {
   width: 3em;
   padding-right: 1em;
   vertical-align: middle;
+}
+
+.success-text {
+  color: #4093FF !important;
+}
+
+.success-border {
+  border: 0.04em solid #4093FF !important;
+  color: #4093FF !important;
 }
 
 /* Used for POST errors. */

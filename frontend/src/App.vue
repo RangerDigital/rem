@@ -31,7 +31,7 @@ export default {
 
 /* CSS Reset */
 html {
-  background-color: #2b2b2b;
+  background-color: #1A1A1A;
   box-sizing: border-box;
   font-size: 10px;
   height: 100vh;
