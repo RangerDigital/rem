@@ -76,7 +76,8 @@ p {
   letter-spacing: 0.15em;
 }
 
-/* Vertical Grid Layout */
+
+/* Vertical Grid Layout for Mobile */
 @media (max-width: 1500px) {
   .grid-container {
     grid-template-columns: 5vw 35vw 20vw 35vw 5vw;
@@ -84,51 +85,36 @@ p {
   }
 }
 
-/* Smartphones - Vertical and Keyboard */
-@media (max-height: 550px) and (orientation: portrait) {
-  html {
-    font-size: 3px !important;
+/* Grid adjustments for Small Height */
+@media (max-height: 500px) {
+  .grid-container {
+    grid-template-rows: 30vh 10vh 80vh 10vh 80vh 10vh 25vh;
   }
 }
 
-/* Smartphones - Vertical */
-@media (max-width: 500px) and (orientation: portrait) {
+@media (min-height: 500px) and (max-height: 600px) {
+  .grid-container {
+    grid-template-rows: 20vh 5vh 50vh 5vh 50vh 5vh 20vh;
+  }
+}
+
+/* Small height laptops */
+@media (min-width: 1100px) and (max-width: 1500px) and (min-height: 600px) and (max-height: 1000px) {
+  .grid-container {
+    grid-template-rows: 20vh 5vh 50vh 5vh 50vh 5vh 20vh;
+  }
+}
+
+/* Font size adjustments */
+/* Smartphones */
+@media (max-width: 500px) {
   html {
     font-size: 5px;
   }
 }
 
-/* Smartphones - Horizontal */
-@media (max-width: 750px) and (orientation: landscape) {
-  html {
-    font-size: 3px;
-  }
-}
-
-/* Tablets - Vertical */
-@media (min-width: 750px) and (max-width: 1100px) and (orientation: portrait) {
-  html {
-    font-size: 6px;
-  }
-
-  .grid-container {
-    grid-template-columns: 15vw 25vw 20vw 25vw 15vw;
-  }
-}
-
-/* Tablets - Horizontal */
-@media (min-width: 750px) and (max-width: 1100px) and (orientation: landscape) {
-  html {
-    font-size: 6px;
-  }
-
-  .grid-container {
-    grid-template-columns: 15vw 25vw 20vw 25vw 15vw;
-  }
-}
-
-/* Laptops - Vertical */
-@media (min-width: 1100px) and (max-width: 1500px) and (orientation: portrait) {
+/* Tablets */
+@media (min-width: 500px) and (max-width: 1100px) {
   html {
     font-size: 7px;
   }
@@ -138,19 +124,19 @@ p {
   }
 }
 
-/* Laptops - Horizontal */
-@media (min-width: 1100px) and (max-width: 1500px) and (orientation: landscape) {
+/* Laptops */
+@media (min-width: 1100px) and (max-width: 1500px) {
   html {
-    font-size: 7px;
+    font-size: 8px;
   }
 
   .grid-container {
-    grid-template-columns: 20vw 20vw 20vw 20vw 20vw;
+    grid-template-columns: 15vw 25vw 20vw 25vw 15vw;
   }
 }
 
-/* Desktop - Horizontal */
-@media (min-width: 1500px) and (max-width: 2000px) and (orientation: landscape) {
+/* Desktop */
+@media (min-width: 1500px) and (max-width: 2000px) {
   html {
     font-size: 8px;
   }

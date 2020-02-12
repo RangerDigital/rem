@@ -21,6 +21,7 @@ export default {
     return {
       shareCode: "",
       shareMessage: "Enter Share Code",
+
       errorState: false,
       successState: false,
       buttonMessage: "RETRIEVE"
@@ -28,6 +29,7 @@ export default {
   },
 
   computed: {
+    // Check if invalid code is entered
     buttonActive: function() {
       if (this.shareCode.length >= 4 || this.successState == true) {
         return true
@@ -38,33 +40,42 @@ export default {
   },
 
   methods: {
-
+    // Get clipboard
     getClipboard: function() {
+      if (this.buttonActive == false) {
+        return
+      }
+
       this.$http.get("http://127.0.0.1:5000/clipboard/" + this.shareCode)
         .then(response => {
           if (response.status == 200) {
             navigator.clipboard.writeText(decodeURIComponent(response.data.clipboard))
               .then(() => {
-                this.buttonMessage = "SUCCESS";
-                this.successState = true;
-                this.shareMessage = "Success, clipboard copied!";
-                this.shareCode = "";
                 this.errorState = false;
+                this.successState = true;
+                this.buttonMessage = "SUCCESS";
+
+                this.shareCode = "";
+                this.shareMessage = "Success, clipboard copied!";
               })
               .catch(() => {
                 this.errorState = true;
                 this.successState = false;
                 this.buttonMessage = "RETRY";
+
                 this.shareMessage = "Clipboard API Error!";
               });
           }
         })
         .catch(error => {
           this.successState = false;
+
           if (error.response.status == 400) {
             this.errorState = true;
             this.buttonMessage = "RETRY";
+
             this.shareMessage = "Invalid Share Code!";
+
           } else {
             this.errorState = true;
             this.shareMessage = "Connection Error!";

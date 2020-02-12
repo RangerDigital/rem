@@ -19,9 +19,10 @@ export default {
   name: "CreateClipboard",
   data() {
     return {
-      shareMessage: "Your Share Code",
       shareCode: "*****",
       shareOpacity: 100,
+      shareMessage: "Your Share Code",
+
       errorState: false,
       buttonMessage: "CREATE"
     };
@@ -34,24 +35,27 @@ export default {
           this.$http.post("http://127.0.0.1:5000/clipboard", {
               clipboard: encodeURIComponent(text)
             })
+            .then(response => {
+              if (response.status == 200) {
+                this.errorState = false;
+                this.buttonMessage = "RECREATE";
+
+                this.shareCode = response.data.code;
+                this.shareOpacity = 100;
+                this.shareMessage = "Your Share Code";
+
+              } else {
+                this.errorState = true;
+
+                this.shareCode = "*****";
+                this.shareMessage = "Empty Clipboard Error!";
+              }
+            })
             .catch(error => {
               this.errorState = true;
               this.shareMessage = "Connection Error!";
               console.log(error);
             })
-            .then(response => {
-              if (response.status == 200) {
-                this.shareCode = response.data.code;
-                this.shareMessage = "Your Share Code";
-                this.shareOpacity = 100;
-                this.errorState = false;
-                this.buttonMessage = "RECREATE";
-              } else {
-                this.shareCode = "*****";
-                this.shareMessage = "Empty Clipboard Error!";
-                this.errorState = true;
-              }
-            });
         })
         .catch(error => {
           this.errorState = true;
