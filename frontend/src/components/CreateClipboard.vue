@@ -40,7 +40,7 @@ export default {
         .readText()
         .then(text => {
           this.$http
-            .post("http://127.0.0.1:5000/clipboard", {
+            .post("/api/clipboard", {
               clipboard: encodeURIComponent(text)
             })
             .then(response => {

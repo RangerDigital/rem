@@ -62,7 +62,7 @@ export default {
       }
 
       this.$http
-        .get("http://127.0.0.1:5000/clipboard/" + this.shareCode)
+        .get("/api/clipboard/" + this.shareCode)
         .then(response => {
           if (response.status == 200) {
             navigator.clipboard
