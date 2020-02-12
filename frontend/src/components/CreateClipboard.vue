@@ -6,11 +6,17 @@
   </div>
 
   <div class="output-field">
-    <p v-bind:class="{'error-text': errorState}">{{ shareMessage }}</p>
-    <h1 class="output-code" v-bind:style="{ opacity: shareOpacity + '%' }" v-bind:class="{'error-text': errorState}">{{ shareCode }}</h1>
+    <p v-bind:class="{ 'error-text': errorState }">{{ shareMessage }}</p>
+    <h1 class="output-code" v-bind:style="{ opacity: shareOpacity + '%' }" v-bind:class="{ 'error-text': errorState }">
+      {{ shareCode }}
+    </h1>
   </div>
 
-  <button v-bind:class="{'error-background': errorState}" v-on:click="postClipboard"><img class="icon-small" src="../assets/icon-paste.svg" />{{ buttonMessage }}</button>
+  <button v-bind:class="{ 'error-background': errorState }" v-on:click="postClipboard">
+    <img class="icon-small" src="../assets/icon-paste.svg" />{{
+        buttonMessage
+      }}
+  </button>
 </div>
 </template>
 
@@ -30,9 +36,11 @@ export default {
   methods: {
     // Send POST to the backend, On error displays a message.
     postClipboard: function() {
-      navigator.clipboard.readText()
+      navigator.clipboard
+        .readText()
         .then(text => {
-          this.$http.post("http://127.0.0.1:5000/clipboard", {
+          this.$http
+            .post("http://127.0.0.1:5000/clipboard", {
               clipboard: encodeURIComponent(text)
             })
             .then(response => {
@@ -43,7 +51,6 @@ export default {
                 this.shareCode = response.data.code;
                 this.shareOpacity = 100;
                 this.shareMessage = "Your Share Code";
-
               } else {
                 this.errorState = true;
 
@@ -55,13 +62,13 @@ export default {
               this.errorState = true;
               this.shareMessage = "Connection Error!";
               console.log(error);
-            })
+            });
         })
         .catch(error => {
           this.errorState = true;
           this.shareMessage = "Permission Error!";
           console.log(error);
-        })
+        });
     },
 
     // Count opacity down every second, reset component after code expires
@@ -76,7 +83,7 @@ export default {
         }
         this.opacityAnimation();
       }, 1000);
-    },
+    }
   },
   created() {
     this.opacityAnimation();
@@ -154,11 +161,11 @@ button {
 }
 
 button:hover {
-  background-color: #2E80EA;
+  background-color: #2e80ea;
 }
 
 button:active {
-  background-color: #2E80EA;
+  background-color: #2e80ea;
   transform: scale(0.98);
 }
 
@@ -170,11 +177,11 @@ button:active {
 
 /* Used for POST errors. */
 .error-text {
-  color: #FF4040 !important;
+  color: #ff4040 !important;
 }
 
 .error-background {
-  background-color: #FF4040 !important;
+  background-color: #ff4040 !important;
 }
 
 @media (max-width: 1500px) {

@@ -1,8 +1,8 @@
 <template>
-  <div class="component-container">
-    <h1 class="text-header"><span>REM.</span>BEDNARSKI<span>.</span>DEV</h1>
-    <p class="text-subheader">Clipboard Sharing Service</p>
-  </div>
+<div class="component-container">
+  <h1 class="text-header"><span>REM.</span>BEDNARSKI<span>.</span>DEV</h1>
+  <p class="text-subheader">Clipboard Sharing Service</p>
+</div>
 </template>
 
 <script>

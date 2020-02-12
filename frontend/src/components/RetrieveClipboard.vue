@@ -6,11 +6,26 @@
   </div>
 
   <div class="input-field">
-    <p v-bind:class="{'error-text': errorState, 'success-text': successState}">{{ shareMessage }}</p>
-    <input v-bind:class="{'error-border': errorState, 'success-border': successState}" maxlength="5" onfocus="this.value=''" type="text" inputmode="numeric" autofocus v-model="shareCode" v-on:keyup.enter="getClipboard" />
+    <p v-bind:class="{
+          'error-text': errorState,
+          'success-text': successState
+        }">
+      {{ shareMessage }}
+    </p>
+    <input v-bind:class="{
+          'error-border': errorState,
+          'success-border': successState
+        }" maxlength="5" onfocus="this.value=''" type="text" inputmode="numeric" autofocus v-model="shareCode" v-on:keyup.enter="getClipboard" />
   </div>
 
-  <button v-bind:class="{'error-background': errorState, 'not-active': !buttonActive}" v-on:click="getClipboard"><img class="icon-small" src="../assets/icon-copy.svg" />{{ buttonMessage }}</button>
+  <button v-bind:class="{
+        'error-background': errorState,
+        'not-active': !buttonActive
+      }" v-on:click="getClipboard">
+    <img class="icon-small" src="../assets/icon-copy.svg" />{{
+        buttonMessage
+      }}
+  </button>
 </div>
 </template>
 
@@ -32,9 +47,9 @@ export default {
     // Check if invalid code is entered
     buttonActive: function() {
       if (this.shareCode.length >= 4 || this.successState == true) {
-        return true
+        return true;
       } else {
-        return false
+        return false;
       }
     }
   },
@@ -43,13 +58,15 @@ export default {
     // Get clipboard
     getClipboard: function() {
       if (this.buttonActive == false) {
-        return
+        return;
       }
 
-      this.$http.get("http://127.0.0.1:5000/clipboard/" + this.shareCode)
+      this.$http
+        .get("http://127.0.0.1:5000/clipboard/" + this.shareCode)
         .then(response => {
           if (response.status == 200) {
-            navigator.clipboard.writeText(decodeURIComponent(response.data.clipboard))
+            navigator.clipboard
+              .writeText(decodeURIComponent(response.data.clipboard))
               .then(() => {
                 this.errorState = false;
                 this.successState = true;
@@ -69,22 +86,19 @@ export default {
         })
         .catch(error => {
           this.successState = false;
+          this.errorState = true;
+
+          this.shareMessage = "Connection Error!";
+          console.log(error);
 
           if (error.response.status == 400) {
-            this.errorState = true;
             this.buttonMessage = "RETRY";
-
             this.shareMessage = "Invalid Share Code!";
+          }
 
-          } else {
-            this.errorState = true;
-            this.shareMessage = "Connection Error!";
-            console.log(error);
-          };
-        })
-
+        });
     }
-  },
+  }
 };
 </script>
 
@@ -165,11 +179,11 @@ button {
 }
 
 button:hover {
-  background-color: #2E80EA;
+  background-color: #2e80ea;
 }
 
 button:active {
-  background-color: #2E80EA;
+  background-color: #2e80ea;
   transform: scale(0.98);
 }
 
@@ -180,30 +194,30 @@ button:active {
 }
 
 .success-text {
-  color: #4093FF !important;
+  color: #4093ff !important;
 }
 
 .success-border {
-  border: 0.04em solid #4093FF !important;
-  color: #4093FF !important;
+  border: 0.04em solid #4093ff !important;
+  color: #4093ff !important;
 }
 
 .not-active {
-  background-color: #C5C5C5 !important;
+  background-color: #c5c5c5 !important;
 }
 
 /* Used for POST errors. */
 .error-text {
-  color: #FF4040 !important;
+  color: #ff4040 !important;
 }
 
 .error-border {
-  border: 0.04em solid #FF4040 !important;
-  color: #FF4040 !important;
+  border: 0.04em solid #ff4040 !important;
+  color: #ff4040 !important;
 }
 
 .error-background {
-  background-color: #FF4040 !important;
+  background-color: #ff4040 !important;
 }
 
 @media (max-width: 1500px) {
