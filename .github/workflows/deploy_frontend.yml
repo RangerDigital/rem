@@ -1,0 +1,41 @@
+name: Deploy - Frontend
+
+on:
+  push:
+    branches:
+    - master
+    paths:
+    - "frontend/**"
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+
+    - name: Build static files
+      run: cd frontend; npm install; npm run build
+      env:
+        CI: true
+
+    - name: Set up RSync
+      run: sudo apt update; sudo apt install rsync
+
+    - name: Set up RSync
+      uses: webfactory/ssh-agent@v0.1.1
+      with:
+        ssh-private-key: ${{ secrets.SSH_KEY }}
+
+    - name: Copy files to Sylvanas
+      run: cd frontend; rsync -Pav --rsync-path="sudo rsync" --delete -e "ssh -o StrictHostKeyChecking=no" dist/* ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOSTNAME }}:/var/www/rem.bednarski.dev/
+
+    - name: Setup Tmate session
+      uses: mxschmitt/action-tmate@v1
+      if: failure()
