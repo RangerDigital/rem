@@ -1,12 +1,12 @@
 <template>
-  <div id="app">
-    <div class="grid-container">
-      <Header />
-      <RetrieveClipboard />
-      <CreateClipboard />
-      <Footer />
-    </div>
+<div id="app">
+  <div class="grid-container">
+    <Header />
+    <RetrieveClipboard />
+    <CreateClipboard />
+    <Footer />
   </div>
+</div>
 </template>
 
 <script>
@@ -32,6 +32,12 @@ export default {
 /* CSS Reset */
 html {
   background-color: #1a1a1a;
+
+  background-image: url(assets/bg-one.svg), url(assets/bg-two.svg);
+  background-repeat: no-repeat, no-repeat;
+  background-size: cover, cover;
+  background-position: bottom;
+
   box-sizing: border-box;
   font-size: 10px;
   height: 100vh;
@@ -78,6 +84,10 @@ p {
 
 /* Vertical Grid Layout for Mobile */
 @media (max-width: 1500px) {
+  html {
+    background-image: none, none;
+  }
+
   .grid-container {
     grid-template-columns: 5vw 35vw 20vw 35vw 5vw;
     grid-template-rows: 15vh 5vh 30vh 5vh 30vh 5vh 10vh;
