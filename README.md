@@ -17,12 +17,12 @@ The Backend of Rem was build using:
 - **PyTest**
 - **Docker**
 
-> 💡 Currently deployed on Armhf/Amd64 Docker Swarm Cluster.
-
 The Frontend of Rem was build using:
 - **Vue.js**
 - **Axios**
 - **CSS Grid**
+
+> 💡 Currently deployed on Arm/Amd64 Docker swarm cluster.
 
 <br>
 
