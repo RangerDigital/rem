@@ -1,3 +1,4 @@
+
 # The Rem
 ![Build - Dev](https://github.com/RangerDigital/rem/workflows/Build%20-%20Dev/badge.svg?branch=dev)
 ![Build - Production](https://github.com/RangerDigital/rem/workflows/Build%20-%20Production/badge.svg?branch=master)
@@ -8,21 +9,36 @@ Source of **Rem**, simple clipboard sharing service build with **Flask** and **V
 
 > 🎉 Check it out live at [rem.bednarski.dev](https://rem.bednarski.dev/)!
 
+## 🍉 Why build another Pastebin service?
+
+
+
+Aside from learning experience, Using Rem has some advantages over other methods of sharing text:
+
+
+
+-   **Number Only Codes**
+
+Because of the temporality of shares only numbers are used for identifying them, which means It's easier to share them with people sitting next to you.
+
+-   **No Login Required**
+
+Using Rem doesn't require you to login unlike using a Facebook on which you have to do it on somebody's else computer.
+
 <br>
 
-## 🛠 Technologies Used
-The Backend of Rem was build using:
-- **Flask**
-- **Redis**
-- **PyTest**
-- **Docker**
+## 🛠 Tools Used
 
-The Frontend of Rem was build using:
-- **Vue.js**
-- **Axios**
-- **CSS Grid**
+#### Backend
+The servers side of Rem consists of the Redis database with a simple dockerized Flask app. PyTest with Docker Compose is used for basic functional testing on the GitHub Actions platform.
 
-> 💡 Currently deployed on Arm/Amd64 Docker swarm cluster.
+Metrics are gathered using self-hosted TIG stack and exceptions monitoring is handled by managed Sentry instance.
+Rem is currently deployed on (Arm/Amd64) Docker Swarm cluster.
+
+<br>
+
+#### Frontend
+As for the client-side, Vue.js with Axios is used for the logic of the CSS Grid heavy interface. Sentry is also used for monitoring exceptions.
 
 <br>
 
