@@ -3,6 +3,8 @@ version: "3.7"
 services:
   backend:
     image: rangerdigital/rem:latest
+    environment:
+      - SENTRY_ENVIRONMENT=production
     deploy:
       replicas: 1
       placement:

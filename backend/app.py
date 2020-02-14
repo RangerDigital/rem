@@ -1,8 +1,14 @@
 import random
 import redis
+import sentry_sdk
 from flask_cors import CORS
 from flask import Flask, jsonify, request
+from sentry_sdk.integrations.flask import FlaskIntegration
 
+sentry_sdk.init(
+    dsn="https://a9278d6a545c473b98af38c9da4cca33@sentry.io/2501473",
+    integrations=[FlaskIntegration()]
+)
 
 app = Flask(__name__)
 CORS(app)
