@@ -1,5 +1,13 @@
 
-# The Rem
+<p align="center">
+  <br /><img
+    width="600"
+    src="logo.png"
+    alt="Rem - Clipboard Sharing Service"
+  />
+</p>
+
+***
 ![Build - Dev](https://github.com/RangerDigital/rem/workflows/Build%20-%20Dev/badge.svg?branch=dev)
 ![Build - Production](https://github.com/RangerDigital/rem/workflows/Build%20-%20Production/badge.svg?branch=master)
 ![Deploy - Frontend](https://github.com/RangerDigital/rem/workflows/Deploy%20-%20Frontend/badge.svg?branch=master)
