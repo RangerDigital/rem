@@ -3,49 +3,48 @@ name: Build - Production
 on:
   push:
     branches:
-    - master
+      - master
     paths:
-    - "backend/**"
+      - "backend/**"
 
 jobs:
-    test:
+  test:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
+      - uses: actions/checkout@v1
 
-    - name: Set up Docker Buildx
-      uses: crazy-max/ghaction-docker-buildx@v1
-      with:
-        version: latest
+      - name: Set up Docker Buildx
+        uses: crazy-max/ghaction-docker-buildx@v1
+        with:
+          version: latest
 
-    - name: Set up py.test
-      run: pip3 install pytest requests
+      - name: Set up py.test
+        run: pip3 install pytest requests
 
-    - name: Run Buildx for testing
-      run: docker buildx build --tag rangerdigital/rem:dev --platform linux/amd64 --output type=docker backend/.
+      - name: Run Buildx for testing
+        run: docker buildx build --tag rangerdigital/rem:dev --platform linux/amd64 --output type=docker backend/.
 
-    - name: Prepare containers for testing
-      run: cd backend/; docker-compose up -d
+      - name: Prepare containers for testing
+        run: cd backend/; docker-compose up -d
 
-    - name: Run all the tests
-      run: sleep 5; cd backend/; python3 -m pytest
-      
+      - name: Run all the tests
+        run: sleep 5; cd backend/; python3 -m pytest
 
   build:
     runs-on: ubuntu-latest
     needs: test
 
     steps:
-    - uses: actions/checkout@v1
+      - uses: actions/checkout@v1
 
-    - name: Set up Docker Buildx
-      uses: crazy-max/ghaction-docker-buildx@v1
-      with:
-        version: latest
+      - name: Set up Docker Buildx
+        uses: crazy-max/ghaction-docker-buildx@v1
+        with:
+          version: latest
 
-    - name: Login to DockerHub
-      run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      - name: Login to DockerHub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Run Buildx
-      run: docker buildx build --tag rangerdigital/rem --platform linux/amd64,linux/arm64,linux/arm/v7 --output type=registry backend/.
+      - name: Run Buildx
+        run: docker buildx build --tag rangerdigital/rem --platform linux/amd64,linux/arm64,linux/arm/v7 --output type=registry backend/.
