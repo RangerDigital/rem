@@ -1,14 +1,14 @@
-name: Build - Dev
+name: Build - Production
 
 on:
   push:
     branches:
-    - dev
+    - master
     paths:
     - "backend/**"
 
 jobs:
-  test:
+    test:
     runs-on: ubuntu-latest
 
     steps:
@@ -30,10 +30,7 @@ jobs:
 
     - name: Run all the tests
       run: sleep 5; cd backend/; python3 -m pytest
-
-    - name: Setup Tmate session
-      uses: mxschmitt/action-tmate@v1
-      if: failure()
+      
 
   build:
     runs-on: ubuntu-latest
@@ -50,5 +47,5 @@ jobs:
     - name: Login to DockerHub
       run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Run Buildx with all platforms
-      run: docker buildx build --tag rangerdigital/rem:dev --platform linux/amd64,linux/arm64,linux/arm/v7 --output type=registry backend/.
+    - name: Run Buildx
+      run: docker buildx build --tag rangerdigital/rem --platform linux/amd64,linux/arm64,linux/arm/v7 --output type=registry backend/.
