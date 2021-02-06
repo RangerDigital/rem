@@ -13,6 +13,7 @@ COPY config.py /
 
 EXPOSE 8000
 
+# Healthcheck
 HEALTHCHECK CMD curl --fail http://127.0.0.1:8000/status || exit 1  
 
 # Run app server.
